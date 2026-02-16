@@ -18,7 +18,10 @@ import {
   Bell,
   Network,
   Check,
+  Menu,
+  X,
 } from "lucide-react";
+import Image from "next/image";
 
 type Mode = "ask-doc-ai" | "ask-fin-ai" | "stock-detail" | "esg";
 
@@ -27,6 +30,7 @@ function App() {
   const [searchMode, setSearchMode] = useState<Mode>("ask-doc-ai");
   const [email, setEmail] = useState("");
   const [notifySubmitted, setNotifySubmitted] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleNotifySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,7 +38,7 @@ function App() {
     try {
       // Using FormSubmit.co - simplest way to collect emails
       // Replace 'your@email.com' with your actual email address
-      const response = await fetch("https://formsubmit.co/your@email.com", {
+      const response = await fetch("https://formsubmit.co/shubhadakunde8@gmail.com", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -66,25 +70,117 @@ function App() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Hero Section */}
-      <section className="py-20 lg:py-32">
+      {/* Black Navbar */}
+      <nav className="bg-[#141218] text-white sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-purple-100 to-blue-100 rounded-full px-4 py-2 mb-8">
+          <div className="flex items-center justify-between h-20">
+            {/* Logo and brand */}
+            <div className="flex items-center space-x-3 -ml-20">
+              {/* Logo image */}
+              <div className="relative w-[136px] h-[136px]"> 
+                <Image
+                  src="/logo_tk.png"
+                  alt="Tickernaut Logo"
+                  fill
+                  className="object-contain"
+                />
+              </div>
+             
+            </div>
+
+            {/* Desktop Navigation Links */}
+            <div className="hidden md:flex items-center space-x-8">
+              <a href="#platform" className="text-gray-300 hover:text-white transition-colors text-sm font-medium">
+                Platform
+              </a>
+              <a href="#capabilities" className="text-gray-300 hover:text-white transition-colors text-sm font-medium">
+                Capabilities
+              </a>
+              <a href="#for-whom" className="text-gray-300 hover:text-white transition-colors text-sm font-medium">
+                For Whom
+              </a>
+              <button
+                onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+                className="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+              >
+                Join Waitlist
+              </button>
+            </div>
+
+            {/* Mobile menu button */}
+            <div className="md:hidden">
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="text-gray-300 hover:text-white focus:outline-none"
+              >
+                {mobileMenuOpen ? (
+                  <X className="h-6 w-6" />
+                ) : (
+                  <Menu className="h-6 w-6" />
+                )}
+              </button>
+            </div>
+          </div>
+
+          {/* Mobile Navigation Menu */}
+          {mobileMenuOpen && (
+            <div className="md:hidden py-4 border-t border-gray-800">
+              <div className="flex flex-col space-y-3">
+                <a
+                  href="#platform"
+                  className="text-gray-300 hover:text-white transition-colors py-2 text-sm font-medium"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Platform
+                </a>
+                <a
+                  href="#capabilities"
+                  className="text-gray-300 hover:text-white transition-colors py-2 text-sm font-medium"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Capabilities
+                </a>
+                <a
+                  href="#for-whom"
+                  className="text-gray-300 hover:text-white transition-colors py-2 text-sm font-medium"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  For Whom
+                </a>
+                <button
+                  onClick={() => {
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                    setMobileMenuOpen(false);
+                  }}
+                  className="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors w-full text-left"
+                >
+                  Join Waitlist
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      </nav>
+
+      {/* Hero Section */}
+      <section className="pt-12 lg:py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-purple-100 to-blue-100 rounded-full px-4 py-2 mb-6">
               <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse" />
               <span className="text-purple-700 text-sm font-medium">
                 Launching Soon - Join the Waitlist
               </span>
             </div>
 
-            <h1 className="text-5xl md:text-6xl font-bold text-black mb-8 leading-tight">
+            <h1 className="text-4xl md:text-5xl font-bold text-black mb-6 leading-tight">
               Research Companies & Markets Using AI
               <span className="block bg-gradient-to-r from-blue-500 via-purple-500 to-purple-600 bg-clip-text text-transparent">
                 Not Dashboards
               </span>
             </h1>
 
-            <p className="text-xl text-gray-600 mb-12 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-l text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
               Tickernaut unifies financial data, market analytics, and ESG
               intelligence into a natural-language AI research experience. Ask
               questions about public companies, private firms, and
@@ -92,9 +188,9 @@ function App() {
             </p>
 
             {/* Search Box - Exact Design from SearchBox Component */}
-            <div className="max-w-4xl mx-auto mb-12">
+            <div className="max-w-4xl mx-auto mb-8">
               {/* Mode Toggle */}
-              <div className="mb-6 flex justify-center">
+              <div className="mb-4 flex justify-center">
                 <div className="flex flex-wrap gap-1 rounded-lg bg-gray-100 p-1">
                   <button
                     onClick={() => setSearchMode("ask-doc-ai")}
@@ -212,7 +308,7 @@ function App() {
               </div>
 
               {/* Suggestion Chips */}
-              <div className="mt-6 flex flex-wrap justify-center gap-3">
+              <div className="mt-4 flex flex-wrap justify-center gap-3">
                 {(searchMode === "ask-doc-ai"
                   ? [
                       "Key factors that contributed to the Persistent revenue growth",
@@ -240,7 +336,7 @@ function App() {
             </div>
 
             {/* Email Waitlist Form */}
-            <div className="max-w-md mx-auto mb-8">
+            <div className="max-w-md mx-auto mb-6">
               <form
                 onSubmit={handleNotifySubmit}
                 className="flex flex-col sm:flex-row gap-3"
@@ -270,7 +366,7 @@ function App() {
             </div>
 
             {/* Trust indicators */}
-            <div className="flex flex-wrap justify-center items-center gap-8 text-sm text-gray-500 mb-12">
+            <div className="flex flex-wrap justify-center items-center gap-8 text-sm text-gray-500 mb-8">
               <div className="flex items-center space-x-2">
                 <CheckCircle className="w-4 h-4 text-green-500" />
                 <span>Launching Q2 2025</span>
@@ -286,7 +382,7 @@ function App() {
             </div>
 
             {/* Example Queries Preview */}
-            <div className="grid md:grid-cols-3 gap-4 max-w-4xl mx-auto mb-10">
+            <div className="grid md:grid-cols-3 gap-4 max-w-4xl mx-auto mb-8">
               <div className="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500 text-left">
                 <p className="text-gray-900 text-sm italic">
                   "Compare revenue growth of TCS vs Infosys"
@@ -314,11 +410,11 @@ function App() {
             </div>
 
             {/* Metrics band */}
-            <div className="mt-10">
-              <div className="rounded-2xl p-6 md:p-8">
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+            <div className="mt-6">
+              <div className="rounded-2xl p-6 md:p-6">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-6">
                   <div className="text-center">
-                    <div className="flex justify-center mb-3">
+                    <div className="flex justify-center mb-2">
                       <FileText className="w-6 h-6 text-purple-500" />
                     </div>
                     <div className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-1">
@@ -330,7 +426,7 @@ function App() {
                   </div>
 
                   <div className="text-center">
-                    <div className="flex justify-center mb-3">
+                    <div className="flex justify-center mb-2">
                       <BarChart3 className="w-6 h-6 text-blue-500" />
                     </div>
                     <div className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-1">
@@ -342,7 +438,7 @@ function App() {
                   </div>
 
                   <div className="text-center">
-                    <div className="flex justify-center mb-3">
+                    <div className="flex justify-center mb-2">
                       <TrendingUp className="w-6 h-6 text-yellow-500" />
                     </div>
                     <div className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-1">
@@ -354,7 +450,7 @@ function App() {
                   </div>
 
                   <div className="text-center">
-                    <div className="flex justify-center mb-3">
+                    <div className="flex justify-center mb-2">
                       <Leaf className="w-6 h-6 text-green-500" />
                     </div>
                     <div className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-1">
@@ -372,10 +468,10 @@ function App() {
       </section>
 
       {/* What is Tickernaut Section */}
-      <section id="platform" className="py-20 bg-gray-50">
+      <section id="platform" className="py-12 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-black mb-6">
+          <div className="max-w-3xl mb-10">
+            <h2 className="text-3xl md:text-4xl font-bold text-black mb-4">
               What is Tickernaut?
             </h2>
             <p className="text-xl text-gray-600">
@@ -879,32 +975,6 @@ function App() {
                   <span className="text-gray-400 cursor-not-allowed">
                     APIs (Soon)
                   </span>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="text-black font-semibold mb-4">Company</h3>
-              <ul className="space-y-2 text-gray-600">
-                <li>
-                  <a href="#" className="hover:text-black transition-colors">
-                    About
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-black transition-colors">
-                    Blog
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-black transition-colors">
-                    Careers
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-black transition-colors">
-                    Contact
-                  </a>
                 </li>
               </ul>
             </div>
